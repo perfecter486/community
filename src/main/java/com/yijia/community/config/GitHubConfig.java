@@ -1,12 +1,10 @@
 package com.yijia.community.config;
 
 
-import com.yijia.community.domain.AccessTokenParam;
+import com.yijia.community.dto.AccessTokenParam;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration

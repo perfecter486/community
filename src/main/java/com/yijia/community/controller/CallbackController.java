@@ -1,19 +1,24 @@
 package com.yijia.community.controller;
 
-import com.yijia.community.domain.AccessTokenParam;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alibaba.fastjson.JSON;
+import com.yijia.community.domain.User;
+import com.yijia.community.dto.AccessTokenParam;
+import com.yijia.community.dto.GithubUser;
+import com.yijia.community.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.sql.Date;
+import java.util.UUID;
 
-@RestController
+
+@Controller
 public class CallbackController {
 
 
@@ -25,8 +30,12 @@ public class CallbackController {
     String tokenUrl;//获取token的url
     @Value("${github.access-token-url}")
     String accessTokenUrl;//认证的url
+
+
+    @Resource
+    UserMapper userMapper;
     @GetMapping("/callback")
-    public String callback(String error,String error_uri,String error_description,String code ){
+    public String callback(String error, String error_uri, String error_description, String code , HttpSession session){
 
 
         accessTokenParam.setCode(code);
@@ -43,12 +52,39 @@ public class CallbackController {
          HttpEntity<String> entity =new HttpEntity<String>(httpHeaders);
         //通过token得到认证
          response =restTemplate.exchange(accessTokenUrl, HttpMethod.GET,entity,String.class);
-
-
          result= response.getBody();
+        GithubUser githubUser=null;
 
 
-       return  result;
+        try {
+            githubUser=JSON.parseObject(result,GithubUser.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        if(githubUser!=null){
+
+
+            //持久化用户信息
+
+            User user=new User();
+            Long time=System.currentTimeMillis();
+            user.setCreate_time(time);
+            user.setModify_time(time);
+            user.setToken(UUID.randomUUID().toString().substring(0,36));
+            user.setAccount_id(githubUser.getId()+"");
+            user.setName(githubUser.getLogin());
+            userMapper.insert(user);
+
+            //保存用户信息到session
+            session.setAttribute("user",githubUser);
+
+
+        }
+
+
+        return "redirect:/";
 
     }
 

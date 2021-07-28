@@ -2,3 +2,17 @@ github:
   access-token-param:
     client_id: 47b1457e4ad4dbd281d2
     client_secret: f67208ebb3fa4671a4545f252cc3f58ad88e1f51
+
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/community?serverTimezone=UTC
+    password: qwe20000509qe
+    username: root
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.yijia.community.domain
