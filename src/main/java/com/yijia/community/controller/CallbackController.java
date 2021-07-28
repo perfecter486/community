@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.UUID;
@@ -35,7 +37,7 @@ public class CallbackController {
     @Resource
     UserMapper userMapper;
     @GetMapping("/callback")
-    public String callback(String error, String error_uri, String error_description, String code , HttpSession session){
+    public String callback(String error, String error_uri, String error_description, String code , HttpSession session, HttpServletResponse httpResponse){
 
 
         accessTokenParam.setCode(code);
@@ -62,13 +64,10 @@ public class CallbackController {
             e.printStackTrace();
         }
 
-
+        User user=new User();
         if(githubUser!=null){
 
-
             //持久化用户信息
-
-            User user=new User();
             Long time=System.currentTimeMillis();
             user.setCreate_time(time);
             user.setModify_time(time);
@@ -77,11 +76,9 @@ public class CallbackController {
             user.setName(githubUser.getLogin());
             userMapper.insert(user);
 
-            //保存用户信息到session
-            session.setAttribute("user",githubUser);
-
-
         }
+
+        httpResponse.addCookie(new Cookie("token",user.getToken()));
 
 
         return "redirect:/";
