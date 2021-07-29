@@ -3,11 +3,16 @@
 
 <mapper namespace="com.yijia.community.mapper.UserMapper">
     <insert id="insert" parameterType="user"  >
-        insert  into user(account_id,name,create_time,modify_time,token) values(#{account_id},#{name},#{create_time},#{modify_time},#{token});
+        insert  into user(account_id,name,create_time,modify_time,token,avatar_url) values(#{account_id},#{name},#{create_time},#{modify_time},#{token},#{avatar_url});
     </insert>
 
     <select id="selectByToken" parameterType="string" resultType="user">
 
         select * from user  where token=#{token}
+    </select>
+
+
+    <select id="selectById" parameterType="integer" resultType="user">
+        select * from user where id=#{id}
     </select>
 </mapper>

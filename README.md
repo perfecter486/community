@@ -5,6 +5,8 @@
 
 [spring 文档 所有入门导航](https://spring.io/guides/)
 
+[thymeleaf文档](https://www.thymeleaf.org/documentation.html)
+
 [ github oauth app](https://docs.github.com/en/enterprise-server@3.0/developers/apps/building-oauth-apps/creating-an-oauth-app)
 [github oauth认证流程](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps)
 ##工具

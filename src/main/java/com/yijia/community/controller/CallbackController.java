@@ -5,6 +5,7 @@ import com.yijia.community.domain.User;
 import com.yijia.community.dto.AccessTokenParam;
 import com.yijia.community.dto.GithubUser;
 import com.yijia.community.mapper.UserMapper;
+import com.yijia.community.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,7 +36,7 @@ public class CallbackController {
 
 
     @Resource
-    UserMapper userMapper;
+    UserService userService;
     @GetMapping("/callback")
     public String callback(String error, String error_uri, String error_description, String code , HttpSession session, HttpServletResponse httpResponse){
 
@@ -57,6 +58,8 @@ public class CallbackController {
          result= response.getBody();
         GithubUser githubUser=null;
 
+        System.out.println(result);
+
 
         try {
             githubUser=JSON.parseObject(result,GithubUser.class);
@@ -74,7 +77,8 @@ public class CallbackController {
             user.setToken(UUID.randomUUID().toString().substring(0,36));
             user.setAccount_id(githubUser.getId()+"");
             user.setName(githubUser.getLogin());
-            userMapper.insert(user);
+            user.setAvatar_url(githubUser.getAvatar_url());
+            userService.insert(user);
 
         }
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yijia.community.mapper.QuestionMapper">
+    <insert id="insert" parameterType="question"  >
+        insert  into question(title,create_time, modify_time,description, creator, view_count ,comment_count, like_count ,tags ) values(#{title},#{create_time},#{modify_time},#{description},#{creator},#{view_count},#{comment_count},#{like_count},#{tags});
+    </insert>
+
+    <select id="selectAllAndPage" resultType="question">
+        select  * from question  limit #{offset} , #{size};
+    </select>
+
+
+    <select id="count" resultType="integer">
+        select count(1) from question ;
+    </select>
+</mapper>

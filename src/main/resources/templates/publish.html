@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>发布问题</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet"  href="css/bootstrap.css" />
+
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="js/jQuery.js" type="application/javascript"></script>
+    <script src="js/bootstrap.js" type="application/javascript"></script>
+</head>
+<body>
+
+<nav th:replace="~{ navigation :: nav }"></nav>
+
+
+<div class="container-fluid" style="margin: 30px;background-color: #333333; color: #ffffff">
+    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 content-left ">
+        <form action="/publish" method="post">
+            <h2><span class="glyphicon glyphicon-plus"></span>发起</h2>
+            <hr style="height: 2px"/>
+
+
+            <div class="input-group col-lg-8 col-md-8 col-xs-12"  style="margin-bottom: 30px" >
+                <label for="prop-title" style="font-size: 20px;margin-bottom: 30px">问 题 标 题( 简明扼要 ) :</label>
+                <input type="text" class="form-control" name="title"  id="prop-title"  th:value="${title}" aria-describedby="basic-addon3" placeholder="问题标题。。。。">
+            </div>
+
+
+            <div class="input-group col-lg-12 col-md-12 "   style="margin-bottom: 30px ">
+                <label for="prop-description" style="font-size: 20px;margin-bottom: 30px">问 题 描 述 （按照右边的指南填写问题）</label>
+                <textarea class="form-control" cols="30"  name="description" rows="10" id="prop-description" style="resize: none" th:text="${description}" ></textarea>
+            </div>
+
+
+
+            <div class="input-group  col-lg-4  col-md-4 col-xs-12" style="margin-bottom: 30px"  >
+                <label for="prop-tag" style="font-size: 20px;margin-bottom: 30px">添 加 标 签 :</label>
+                <input type="text" class="form-control " id="prop-tag" aria-describedby="basic-addon3" th:value="${tags}" placeholder="每个标签用逗号隔开" name="tags">
+            </div>
+
+            <button type="submit" class="btn btn-success prop-publish">发布</button>
+            <!-- 提示           -->
+            <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error != null}"></div>
+            <div class="alert alert-danger" role="alert" th:text="${success}" th:if="${success != null}"></div>
+        </form>
+    </div>
+    <div class="col-lg-3 col-md-12  col-sm-12 col-xs-12 content-right "  >
+
+        <h3>问题发起指南</h3>
+
+        .问题标题：请用精简的语言描述您发布的问题，不超过25字<br>
+        .问题补充：详细补充您的问题内容，并确保问题描述清晰直观，并提供一些相关的资料<br>
+        .问题分类：可以添加一个或多个分类标签，每个标签之间用逗号隔开。
+
+    </div>
+</div>
+</body>
+</html>

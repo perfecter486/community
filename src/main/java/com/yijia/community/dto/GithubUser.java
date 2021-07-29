@@ -1,5 +1,8 @@
 package com.yijia.community.dto;
 
+import lombok.Data;
+
+@Data
 public class GithubUser {
 
 
@@ -7,36 +10,5 @@ public class GithubUser {
     private  Long id;
     private  String  bio;
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    @Override
-    public String toString() {
-        return "GithubUser{" +
-                "login='" + login + '\'' +
-                ", id=" + id +
-                ", bio='" + bio + '\'' +
-                '}';
-    }
+    private  String avatar_url;
 }

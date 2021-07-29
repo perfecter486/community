@@ -1,42 +1,36 @@
 package com.yijia.community.controller;
 
 
-import com.yijia.community.domain.User;
-import com.yijia.community.mapper.UserMapper;
-import org.springframework.context.annotation.Configuration;
+import com.yijia.community.dto.PageDto;
+
+import com.yijia.community.service.QuestionService;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import java.text.CollationKey;
+
 
 @Controller
 public class IndexController {
 
 
     @Resource
-    UserMapper userMapper;
+    QuestionService questionService;
     @GetMapping("/")
-    public String index(HttpServletRequest request){
+    public String index( @RequestParam(value = "page" ,required = false) Integer  page, Model model){
 
 
-        Cookie[] cookies=request.getCookies();
-        User user=null;
-
-
-        for (Cookie cookie :cookies){//利用cookie中的token查找用户信息
-
-            if(cookie.getName().equals("token")){
-               user= userMapper.selectByToken(cookie.getValue());
-               break;
-            }
+        if (page==null){//检验
+            page=1;
         }
 
-        //将查找的用户信息放入session中
-
-        request.getSession().setAttribute("user",user);
+        //查询所有的问题
+        PageDto pageDto=questionService.selectQuestionsAndPage(page,1);
+        //将问题填入model
+        model.addAttribute("pageDto", pageDto);
 
         return "index";
     }

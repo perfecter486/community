@@ -10,4 +10,6 @@ public interface UserMapper {
     int insert(User user);
 
     User selectByToken(String value);
+
+    User selectById(Integer id);
 }
