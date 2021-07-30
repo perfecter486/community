@@ -34,6 +34,8 @@ public class LoginInterceptor  implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
 
+        System.out.println(request.getRequestURI());
+
         Cookie[] cookies=request.getCookies();
         User user=null;
         System.out.println("aaaa");
@@ -51,7 +53,11 @@ public class LoginInterceptor  implements HandlerInterceptor {
 
         request.getSession().setAttribute("user",user);
 
-
+//
+//        if(user ==null){
+//
+//            return false;
+//        }
         return true;
     }
 

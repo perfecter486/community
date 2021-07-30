@@ -15,6 +15,7 @@ public class Question {
     private  int comment_count;
     private  int like_count;
     private  String tags;
+    private  String creator_account_id;
 
 
 }

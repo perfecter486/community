@@ -14,5 +14,4 @@ public class User {
     private  Long modify_time;
     private  String avatar_url;
 
-
 }

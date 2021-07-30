@@ -90,6 +90,7 @@ public class PublishController {
             question.setTags(tags);
             question.setDescription(description);
             question.setTitle(title);
+            question.setCreator_account_id(user.getAccount_id());
 
             questionService.insert(question);
 

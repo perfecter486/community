@@ -15,4 +15,8 @@ public interface QuestionMapper {
     List<Question> selectAllAndPage(@Param("offset") Integer offset,@Param("size") Integer size);
 
     int count();
+
+    List<Question> selectByUserAccountIdAndPage(@Param("offset") Integer offset,@Param("size") Integer size,@Param("account_id") String accountId);
+
+    int countOfUserSelf(@Param("account_id") String accountId);
 }

@@ -1,13 +1,13 @@
 package com.yijia.community.service;
 
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import com.yijia.community.domain.Question;
 import com.yijia.community.domain.User;
 import com.yijia.community.dto.PageDto;
+import com.yijia.community.dto.PageInfoDto;
 import com.yijia.community.dto.QuestionDto;
+import com.yijia.community.dto.QuestionPageInfoDto;
 import com.yijia.community.mapper.QuestionMapper;
 import com.yijia.community.mapper.UserMapper;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +47,7 @@ public class QuestionService {
         int offset=(page-1)*size;
         List<Question> question=questionMapper.selectAllAndPage(offset,size);
 
-        for( Question question1: question){
+        for( Question question1: question){//对每个问题查询其发起人
 
             int creator =question1.getCreator();
 
@@ -71,6 +71,8 @@ public class QuestionService {
         return questionMapper.count();
     }
 
+    private  int count(String accountId){ return questionMapper.countOfUserSelf(accountId);}
+
 
     public PageDto selectQuestionsAndPage(Integer page,Integer size){
 
@@ -82,13 +84,50 @@ public class QuestionService {
         int count =count();
 
 
-        return writePageInfo(page,size,count,questionDtos);
+        PageInfoDto  pageInfoDto= writePageInfo(page,size,count);
+
+        PageDto pageDto =new PageDto();
+
+        pageDto.setQuestionDtoList(questionDtos);
+        pageDto.setPageInfoDto(pageInfoDto);
+
+        return pageDto;
+
 
     }
 
 
+
+    public QuestionPageInfoDto  selectQuestionsAndPage(Integer page, Integer size, String accountId){
+
+
+
+
+        List<Question> questions = questionMapper.selectByUserAccountIdAndPage(page,size,accountId);
+
+        int count= count(accountId);
+
+        int offset =(page-1);
+
+        PageInfoDto  pageInfoDto=writePageInfo(offset,size,count);
+
+
+
+        QuestionPageInfoDto questionPageInfoDto=new QuestionPageInfoDto();
+
+        questionPageInfoDto.setQuestions(questions);
+
+        questionPageInfoDto.setPageInfoDto(pageInfoDto);
+
+        return questionPageInfoDto;
+
+
+    }
+
+
+
     //填写分页后,相关页码显示的信息
-    private   PageDto writePageInfo(int page,int size,int count,List<QuestionDto> questionDtos){
+    private  PageInfoDto   writePageInfo(int page,int size,int count){
 
 
 
@@ -112,25 +151,28 @@ public class QuestionService {
         }
 
 
+        PageInfoDto pageInfoDto =new PageInfoDto();
+
         //判断当前页码之前还有页码否
-        pageDto.setShowPre((page>1?true:false));
+        pageInfoDto.setShowPre((page>1?true:false));
 
         //判断当前页码之后还有页码否
-        pageDto.setShowNext((page<pages)?true:false);
+        pageInfoDto.setShowNext((page<pages)?true:false);
 
         //判断是否显示第一页链接
 
-        pageDto.setShowFirstPage((page-3>1)?true:false);
+        pageInfoDto.setShowFirstPage((page-3>1)?true:false);
 
         //判断是否显示最后一页链接
-        pageDto.setShowEndPage((page+3<pages)?true:false);
+        pageInfoDto.setShowEndPage((page+3<pages)?true:false);
 
-        pageDto.setPage(page);
-        pageDto.setPageList(pageList);
-        pageDto.setQuestionDtoList(questionDtos);
-        pageDto.setPages(pages);
+        pageInfoDto.setPage(page);
+        pageInfoDto.setPageList(pageList);
+        pageInfoDto.setPages(pages);
 
-        return  pageDto;
+
+
+        return  pageInfoDto;
 
     }
 }

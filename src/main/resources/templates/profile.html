@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>主页</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet"  href="/css/bootstrap.css" />
+
+    <link rel="stylesheet" href="/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/jQuery.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.js" type="application/javascript"></script>
+</head>
+<body>
+
+
+<nav th:replace="~{ navigation :: nav }"></nav>
+
+<div class="container-fluid" style="margin: 30px">
+    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 content-left ">
+
+        <h2><span class="glyphicon glyphicon-list"></span><span th:text="${sectionName}"></span></h2>
+        <hr />
+
+
+        <div class="media" th:each="question :${ questionPageInfoDto.questions} ">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object img-circle"   src="#" alt="...">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading" th:text="${question.title}"></h4>
+                <span class="prop-item-flag"> * <span th:text="${question.like_count}"></span>个关注 * <span th:text="${question.comment_count}"></span>个回复 *  <span th:text="${#dates.format(question.create_time,'yyyy-MM-dd HH:mm:ss')}"></span> </span>
+            </div>
+        </div>
+
+
+
+        <!-- 我的问题部分  start     -->
+
+        <nav aria-label="Page navigation" th:if="${sectionName == 'questions'}">
+            <ul class="pagination">
+                <li>
+                    <a th:if="${ questionPageInfoDto.pageInfoDto.showFirstPage}" th:href="@{/profile/questions/?page=1}" >
+                        &lt;&lt;
+                    </a>
+                </li>
+                <li>
+                    <a th:if="${  questionPageInfoDto.pageInfoDto.showPre}"  th:href="@{/profile/questions/(page=${  questionPageInfoDto.pageInfoDto.page - 1})}">
+                        &lt;
+                    </a>
+                </li>
+                <li th:class="${pageI==  questionPageInfoDto.pageInfoDto.page}? active : '' " th:each="pageI : ${  questionPageInfoDto.pageInfoDto.pageList }"><a th:href="@{/profile/questions/(page=${pageI})}" th:text="${pageI}"></a></li>
+
+                <li>
+                    <a th:if="${ questionPageInfoDto.pageInfoDto.showNext}"  th:href="@{/profile/questions/(page=${ questionPageInfoDto.pageInfoDto.page+1})}" >
+                        &gt;
+                    </a>
+                </li>
+                <li>
+                    <a  th:if="${questionPageInfoDto.pageInfoDto.showEndPage}" th:href="@{/profile/questions/(page=${questionPageInfoDto.pageInfoDto.pages})}" >
+                        &gt;&gt;
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 我的问题部分 end      -->
+
+    </div>
+    <div class="col-lg-3 col-md-12  col-sm-12 col-xs-12 content-right "  >
+
+
+        <div class="list-group">
+            <a  href="/profile/questions" th:class="${sectionName == 'questions'}? 'active list-group-item' : 'list-group-item' " >我的问题</a>
+            <a href="/profile/fllows" th:class="${sectionName == 'follows'}? 'active list-group-item' : 'list-group-item' " >关注话题</a>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

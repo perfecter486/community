@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.yijia.community.domain.User;
 import com.yijia.community.dto.AccessTokenParam;
 import com.yijia.community.dto.GithubUser;
-import com.yijia.community.mapper.UserMapper;
 import com.yijia.community.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -13,11 +12,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
+
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Date;
 import java.util.UUID;
 
 

@@ -3,7 +3,7 @@
 
 <mapper namespace="com.yijia.community.mapper.QuestionMapper">
     <insert id="insert" parameterType="question"  >
-        insert  into question(title,create_time, modify_time,description, creator, view_count ,comment_count, like_count ,tags ) values(#{title},#{create_time},#{modify_time},#{description},#{creator},#{view_count},#{comment_count},#{like_count},#{tags});
+        insert  into question(title,create_time, modify_time,description, creator, view_count ,comment_count, like_count ,tags ,creator_account_id) values(#{title},#{create_time},#{modify_time},#{description},#{creator},#{view_count},#{comment_count},#{like_count},#{tags},#{creator_account_id});
     </insert>
 
     <select id="selectAllAndPage" resultType="question">
@@ -13,5 +13,17 @@
 
     <select id="count" resultType="integer">
         select count(1) from question ;
+    </select>
+
+    <select id="selectByUserAccountIdAndPage" resultType="question">
+
+        select *
+        from question where creator_account_id = #{account_id } limit #{offset} , #{size} ;
+    </select>
+    <select id="countOfUserSelf" resultType="integer">
+
+        select count(1)
+        from question where creator_account_id =#{account_id} ;
+
     </select>
 </mapper>
